@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindGuard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="stApp">
+        <div class="main">
+            <div class="block-container">
+                <!-- Exact Streamlit Title -->
+                <div class="element-container">
+                    <h1>🧠 MindGuard</h1>
+                </div>
+                
+                <!-- Exact Streamlit Subheader -->
+                <div class="element-container">
+                    <h2>AI-Powered Burnout Detection for Students</h2>
+                </div>
+                
+                <!-- Exact Streamlit Divider -->
+                <div class="element-container">
+                    <hr class="streamlit-divider">
+                </div>
+                
+                <!-- Exact Streamlit Markdown -->
+                <div class="element-container">
+                    <p>Welcome! MindGuard helps you check in with your mental wellness and offers guidance to help prevent burnout. All data is anonymous.</p>
+                </div>
+                
+                <!-- Exact Streamlit Section Header -->
+                <div class="element-container">
+                    <h2>🌡️ Daily Wellness Check-In</h2>
+                </div>
+                
+                <!-- Exact Streamlit Caption -->
+                <div class="element-container">
+                    <p class="caption">Use the sliders to reflect on your current state (1 = low, 5 = high).</p>
+                </div>
+
+                <form id="wellness-form">
+                    <!-- Exact Streamlit Two Column Layout -->
+                    <div class="streamlit-columns">
+                        <!-- Left Column -->
+                        <div class="column">
+                            <!-- Mood Slider -->
+                            <div class="element-container">
+                                <h3 id="mood-label">😐 Mood</h3>
+                                <div class="stSlider">
+                                    <div class="custom-slider" data-slider="mood">
+                                        <div class="slider-track"></div>
+                                        <div class="slider-fill"></div>
+                                        <div class="slider-thumb"></div>
+                                    </div>
+                                    <input type="range" min="1" max="5" value="3" class="hidden-slider" name="mood" id="mood">
+                                </div>
+                                <div class="help-tooltip">1 = Very bad, 5 = Excellent</div>
+                            </div>
+
+                            <!-- Stress Slider -->
+                            <div class="element-container">
+                                <h3 id="stress-label">😟 Stress</h3>
+                                <div class="stSlider">
+                                    <div class="custom-slider" data-slider="stress">
+                                        <div class="slider-track"></div>
+                                        <div class="slider-fill"></div>
+                                        <div class="slider-thumb"></div>
+                                    </div>
+                                    <input type="range" min="1" max="5" value="3" class="hidden-slider" name="stress" id="stress">
+                                </div>
+                                <div class="help-tooltip">1 = No stress, 5 = Extreme stress</div>
+                            </div>
+
+                            <!-- Focus Slider -->
+                            <div class="element-container">
+                                <h3 id="focus-label">😐 Focus</h3>
+                                <div class="stSlider">
+                                    <div class="custom-slider" data-slider="focus">
+                                        <div class="slider-track"></div>
+                                        <div class="slider-fill"></div>
+                                        <div class="slider-thumb"></div>
+                                    </div>
+                                    <input type="range" min="1" max="5" value="3" class="hidden-slider" name="focus" id="focus">
+                                </div>
+                                <div class="help-tooltip">1 = Can't focus, 5 = Fully focused</div>
+                            </div>
+
+                            <!-- Motivation Slider -->
+                            <div class="element-container">
+                                <h3 id="motivation-label">😐 Motivation</h3>
+                                <div class="stSlider">
+                                    <div class="custom-slider" data-slider="motivation">
+                                        <div class="slider-track"></div>
+                                        <div class="slider-fill"></div>
+                                        <div class="slider-thumb"></div>
+                                    </div>
+                                    <input type="range" min="1" max="5" value="3" class="hidden-slider" name="motivation" id="motivation">
+                                </div>
+                                <div class="help-tooltip">1 = No motivation, 5 = Highly motivated</div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="column">
+                            <!-- Sleep Slider -->
+                            <div class="element-container spaced-slider">
+                                <h3 id="sleep-label">😐 Sleep Quality</h3>
+                                <div class="stSlider">
+                                    <div class="custom-slider" data-slider="sleep">
+                                        <div class="slider-track"></div>
+                                        <div class="slider-fill"></div>
+                                        <div class="slider-thumb"></div>
+                                    </div>
+                                    <input type="range" min="1" max="5" value="3" class="hidden-slider" name="sleep" id="sleep">
+                                </div>
+                                <div class="help-tooltip">1 = Very poor, 5 = Well-rested</div>
+                            </div>
+
+                            <!-- Energy Slider -->
+                            <div class="element-container spaced-slider">
+                                <h3 id="energy-label">😐 Energy Level</h3>
+                                <div class="stSlider">
+                                    <div class="custom-slider" data-slider="energy">
+                                        <div class="slider-track"></div>
+                                        <div class="slider-fill"></div>
+                                        <div class="slider-thumb"></div>
+                                    </div>
+                                    <input type="range" min="1" max="5" value="3" class="hidden-slider" name="energy" id="energy">
+                                </div>
+                                <div class="help-tooltip">1 = Exhausted, 5 = Very energetic</div>
+                            </div>
+
+                            <!-- Anxiety Slider -->
+                            <div class="element-container spaced-slider">
+                                <h3 id="anxiety-label">😬 Anxiety</h3>
+                                <div class="stSlider">
+                                    <div class="custom-slider" data-slider="anxiety">
+                                        <div class="slider-track"></div>
+                                        <div class="slider-fill"></div>
+                                        <div class="slider-thumb"></div>
+                                    </div>
+                                    <input type="range" min="1" max="5" value="3" class="hidden-slider" name="anxiety" id="anxiety">
+                                </div>
+                                <div class="help-tooltip">1 = Calm, 5 = Extremely anxious</div>
+                            </div>
+
+                            <!-- Appetite Slider -->
+                            <div class="element-container spaced-slider">
+                                <h3 id="appetite-label">😐 Appetite</h3>
+                                <div class="stSlider">
+                                    <div class="custom-slider" data-slider="appetite">
+                                        <div class="slider-track"></div>
+                                        <div class="slider-fill"></div>
+                                        <div class="slider-thumb"></div>
+                                    </div>
+                                    <input type="range" min="1" max="5" value="3" class="hidden-slider" name="appetite" id="appetite">
+                                </div>
+                                <div class="help-tooltip">1 = Poor appetite, 5 = Very strong appetite</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Exact Streamlit Journal Section -->
+                    <div class="element-container">
+                        <h2>📝 Optional Journal Entry</h2>
+                    </div>
+                    
+                    <div class="element-container">
+                        <div class="stTextArea">
+                            <textarea 
+                                id="journal" 
+                                name="journal"
+                                placeholder="E.g., I'm feeling a bit overwhelmed but trying to stay focused."
+                                rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Exact Streamlit Divider -->
+                    <div class="element-container">
+                        <hr class="streamlit-divider">
+                    </div>
+
+                    <!-- Exact Streamlit Button -->
+                    <div class="element-container">
+                        <button type="submit" class="stButton" id="submit-btn">
+                            <div class="btn-content">
+                                <span class="btn-text">✅ Submit Check-In</span>
+                                <span class="btn-loading" style="display: none;">Analyzing...</span>
+                            </div>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Results Section - Exact Streamlit Style -->
+                <div id="results" class="results-section" style="display: none;">
+                    <!-- Success Message -->
+                    <div class="element-container">
+                        <div class="stAlert stAlert--success">
+                            <div class="stAlert-content">✅ Check-in submitted!</div>
+                        </div>
+                    </div>
+
+                    <!-- Burnout Result -->
+                    <div class="element-container" id="burnout-result">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+
+                    <!-- Resources Section -->
+                    <div class="element-container">
+                        <h4>🎯 Suggested Campus Resources</h4>
+                        <div id="resources"></div>
+                    </div>
+
+                    <!-- Feedback -->
+                    <div class="element-container">
+                        <div class="stAlert stAlert--info" id="feedback">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Emotion Analysis -->
+                    <div class="element-container" id="emotion-analysis" style="display: none;">
+                        <h4>📝 Emotion Analysis</h4>
+                        <div class="emotion-result"></div>
+                    </div>
+                </div>
+
+                <!-- Exact Streamlit Footer -->
+                <div class="element-container">
+                    <hr class="streamlit-divider">
+                </div>
+                
+                <div class="element-container">
+                    <div class="stCaption">🔒 Your data stays private. No names, IDs, or personal information are stored.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

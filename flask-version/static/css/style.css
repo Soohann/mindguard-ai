@@ -1,0 +1,466 @@
+/* Exact Streamlit CSS Match */
+
+/* Import Streamlit fonts */
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap');
+
+/* Reset and base - Exact Streamlit */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: "Source Sans Pro", sans-serif;
+    background-color: #ffffff;
+    color: #262730;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Exact Streamlit App Structure */
+.stApp {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: #ffffff;
+}
+
+.block-container {
+    max-width: 736px;
+    padding-top: 5rem;
+    padding-bottom: 10rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+}
+
+/* Exact Streamlit Element Container */
+.element-container {
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+/* Exact Streamlit Typography */
+h1 {
+    font-weight: 700;
+    color: rgb(49, 51, 63);
+    font-size: 2.5rem;
+    line-height: 1.2;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+h2 {
+    font-weight: 600;
+    color: rgb(49, 51, 63);
+    font-size: 1.75rem;
+    line-height: 1.6;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+h3 {
+    font-weight: 600;
+    color: rgb(49, 51, 63);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+h4 {
+    font-weight: 600;
+    color: rgb(49, 51, 63);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    color: rgb(49, 51, 63);
+}
+
+/* Exact Streamlit Caption */
+.caption {
+    font-size: 0.875rem;
+    color: rgba(49, 51, 63, 0.6);
+    line-height: 1.6;
+}
+
+.stCaption {
+    font-size: 0.75rem;
+    color: rgba(49, 51, 63, 0.6);
+    line-height: 1.6;
+    text-align: center;
+}
+
+/* Exact Streamlit Divider */
+.streamlit-divider {
+    border: none;
+    height: 1px;
+    background-color: rgba(49, 51, 63, 0.2);
+    margin: 1rem 0;
+}
+
+/* Exact Streamlit Columns */
+/* Exact Streamlit Columns */
+.streamlit-columns {
+    display: flex;
+    justify-content: space-between;
+    column-gap: 3rem;  /* increase horizontal spacing between columns */
+    width: 100%;
+}
+
+.column {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Exact Streamlit Slider Container */
+.stSlider {
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+/* Hide default slider input */
+.hidden-slider {
+    display: none;
+}
+
+/* Custom slider track - Exact Streamlit appearance */
+.custom-slider {
+    position: relative;
+    width: 100%;
+    height: 6px;
+    cursor: pointer;
+    border-radius: 3px;
+    background-color: rgb(240, 242, 246);
+    margin: 1rem 0;
+}
+
+.slider-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(240, 242, 246);
+    border-radius: 3px;
+}
+
+.slider-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    background-color: rgb(240, 242, 246);
+}
+
+/* Exact Streamlit slider thumb */
+.slider-thumb {
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    background: rgb(255, 255, 255);
+    border-radius: 50%;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px,
+                rgba(0, 0, 0, 0.14) 0px 2px 2px 0px,
+                rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
+    transition: all 0.3s ease;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: white;
+    font-weight: bold;
+}
+
+.thumb-value {
+    position: absolute;
+    top: -22px;
+    font-size: 12px;
+    font-weight: bold;
+    color: inherit;
+}
+
+.slider-thumb:hover {
+    transform: translate(-50%, -50%) scale(1.05);
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 5px -1px, rgba(0, 0, 0, 0.14) 0px 6px 10px 0px, rgba(0, 0, 0, 0.12) 0px 1px 18px 0px;
+}
+
+/* Color classes for slider fills - Your requested colors */
+.fill-color-1 { background-color: #2ECC71; }   /* bright green (best) */
+.fill-color-2 { background-color: #A9DFBF; }   /* light green */
+.fill-color-3 { background-color: #F7DC6F; }   /* yellow */
+.fill-color-4 { background-color: #F5B041; }   /* orange */
+.fill-color-5 { background-color: #E74C3C; }   /* red (worst) */
+
+
+/* Thumb colors - keep Streamlit red border */
+.thumb-color-1 {
+    background-color: #22c55e;
+    border-color: #22c55e;
+    color: #22c55e;
+}
+
+.thumb-color-2 {
+    background-color:#22c55e;
+    border-color:#22c55e;
+    color: #22c55e;
+}
+.thumb-color-3 {
+    background-color: #eab308;
+    border-color: #eab308; /* yellow */
+    color: #eab308;
+}
+.thumb-color-4 {
+    background-color: #f97316;
+    border-color: #f97316; /* orange */
+    color: #f97316;
+}
+.thumb-color-5 {
+    background-color: #ef4444;
+    border-color: #ef4444;
+    color: #ef4444;
+
+}
+
+/* Exact Streamlit help tooltip */
+.help-tooltip {
+    font-size: 0.83rem;
+    color: rgba(49, 51, 63, 0.6);
+    margin-top: 0.25rem;
+    line-height: 1.6;
+}
+
+
+/* Exact Streamlit Text Area */
+.stTextArea {
+    position: relative;
+}
+
+.stTextArea textarea {
+    width: 100%;
+    min-height: 95px;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid rgb(207, 213, 220);
+    border-radius: 0.5rem;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgb(49, 51, 63);
+    background-color: rgb(255, 255, 255);
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.stTextArea textarea:focus {
+    border-color: rgb(255, 75, 75);
+    box-shadow: rgb(255, 75, 75) 0px 0px 0px 0.2rem;
+}
+
+.stTextArea textarea::placeholder {
+    color: rgba(49, 51, 63, 0.6);
+}
+
+/* Exact Streamlit Button */
+.stButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid rgb(49, 51, 63);      /* normal dark border */
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    border-radius: 0.5rem;
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
+    color: rgb(49, 51, 63);                 /* normal dark text */
+    background-color: rgb(255, 255, 255);   /* white background */
+    min-height: 38.4px;
+}
+
+.stButton:hover {
+    color: rgb(255, 75, 75);                /* red text */
+    border-color: rgb(255, 75, 75);         /* red border */
+    background-color: rgb(255, 255, 255);   /* still white */
+}
+
+
+.stButton:focus {
+    box-shadow: rgb(255, 75, 75) 0px 0px 0px 0.2rem;
+}
+
+.stButton:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.btn-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Exact Streamlit Alert */
+.stAlert {
+    position: relative;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.stAlert--success {
+    color: rgb(12, 84, 96);
+    background-color: rgb(209, 236, 241);
+    border-color: rgb(178, 223, 232);
+}
+
+.stAlert--info {
+    color: rgb(12, 84, 96);
+    background-color: rgb(209, 236, 241);
+    border-color: rgb(178, 223, 232);
+}
+
+.stAlert-content {
+    width: 100%;
+}
+
+/* Results section */
+.results-section {
+    margin-top: 1rem;
+}
+
+/* Mobile responsiveness - Exact Streamlit breakpoints */
+@media (max-width: 768px) {
+    .block-container {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        padding-top: 1rem;
+    }
+    
+    .streamlit-columns {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    h1 {
+        font-size: 1.875rem;
+    }
+    
+    h2 {
+        font-size: 1.125rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .block-container {
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Additional Streamlit-specific styles */
+.element-container:empty {
+    display: none;
+}
+
+/* Ensure proper spacing between elements */
+.element-container + .element-container {
+    margin-top: 3rem;
+}
+
+/* Streamlit-like focus states */
+*:focus {
+    outline: none;
+}
+
+/* Streamlit loading spinner */
+.btn-loading {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Animation for results appearing */
+.results-section {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slider-thumb .thumb-value {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1rem;
+  font-weight: 600;
+  color: inherit;
+  background: none;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  pointer-events: none;
+}
+
+
+
+/* Adds space between label and slider */
+.slider-label {
+    display: block;
+    margin-bottom: 1.5rem; /* adjust spacing here */
+    font-weight: 600;
+    font-size: 1rem;
+}
