@@ -10,3 +10,5 @@ __pycache__/
 
 # macOS hidden files
 .DS_Store
+venv/
+flask-version/venv/
