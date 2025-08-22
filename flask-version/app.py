@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 import re
 import os
+import hashlib
+from datetime import date
 
 EMOTION_PIPELINE = None
 USE_EMOTION = os.getenv("USE_EMOTION", "0") in ("1", "true", "True")
@@ -9,7 +11,14 @@ USE_EMOTION = os.getenv("USE_EMOTION", "0") in ("1", "true", "True")
 app = Flask(__name__)
 CORS(app)
 
-# Emoji mappings for different wellness metrics (Energy removed)
+# ---------- Constants
+VANDAL_LINKS = {
+    "athletics": "https://govandals.com",
+    "swim": "https://www.uidaho.edu/recreation/swim-center",
+    "rec": "https://www.uidaho.edu/recreation/rec-center",
+}
+
+# Emoji mappings for different wellness metrics
 EMOJIS = {
     "mood": {1: "😞", 2: "🙁", 3: "😐", 4: "🙂", 5: "😄"},
     "stress": {1: "😌", 2: "😕", 3: "😟", 4: "😣", 5: "😫"},
@@ -18,11 +27,24 @@ EMOJIS = {
     "motivation": {1: "🥀", 2: "😕", 3: "😐", 4: "🙂", 5: "🚀"},
     "anxiety": {1: "😌", 2: "😯", 3: "😬", 4: "😰", 5: "😱"},
     "appetite": {1: "🥄", 2: "🍽️", 3: "😐", 4: "🥗", 5: "🍱"},
-    "food_security": {1: "🍽️", 2: "🥪", 3: "🙂", 4: "🧺", 5: "💳"}
+    "food_security": {1: "🍽️", 2: "🥪", 3: "🙂", 4: "🧺", 5: "💳"},
 }
 
+# ---------- Helpers for varied text
+def _pick(items, seed_key):
+    """Deterministic picker for variety (stable per day + payload)."""
+    if not items:
+        return ""
+    seed = int(hashlib.md5(seed_key.encode()).hexdigest(), 16)
+    return items[seed % len(items)]
+
+def _has(txt, *words):
+    low = (txt or "").lower()
+    return any(w in low for w in words)
+
+# ---------- Scoring
 def calculate_wellness_score(data):
-    """Calculate overall wellness score from user inputs (Energy removed; divide by 8)."""
+    """Calculate overall wellness score from user inputs (average of 8 metrics)."""
     mood = data['mood']
     stress = data['stress']
     focus = data['focus']
@@ -35,10 +57,9 @@ def calculate_wellness_score(data):
     # Reverse scoring for negative metrics
     stress_score = 6 - stress
     anxiety_score = 6 - anxiety
-    # Appetite: center at 3 is best (your current 0–3 mapping retained)
+    # Appetite: center at 3 is best → 0..3 scale
     appetite_score = 3 - abs(appetite - 3)
 
-    # Calculate average wellness score across 8 metrics
     wellness_score = (
         mood + stress_score + focus + sleep +
         motivation + anxiety_score + appetite_score + food_security
@@ -47,7 +68,7 @@ def calculate_wellness_score(data):
     return wellness_score
 
 def get_burnout_level(wellness_score):
-    """Determine burnout risk level based on wellness score"""
+    """Determine burnout risk level based on wellness score."""
     if wellness_score >= 4.0:
         return "Low"
     elif wellness_score >= 2.5:
@@ -55,55 +76,77 @@ def get_burnout_level(wellness_score):
     else:
         return "High"
 
+# ---------- Resources
 def get_resources(burnout_level, data=None):
-    """Campus resources; adds food support if food_security is low."""
-    resources = {
-        "High": {
-            "title": "🎯 Suggested Campus Resources",
-            "items": [
-                {"name": "🧠 Counseling Services", "url": "https://www.uidaho.edu/current-students/cmhc",
-                 "description": "Free short-term counseling, mental health support."},
-                {"name": "📘 TRIO Student Support Services", "url": "https://www.uidaho.edu/current-students/academic-support/asp/sss",
-                 "description": "Academic advising, tutoring, and life coaching for eligible students."},
-                {"name": "🏛️ Vandal Success Center", "url": "https://www.uidaho.edu/current-students/academic-support/asp",
-                 "description": "Help with tutoring, time management, and academic skills."},
-            ]
-        },
-        "Moderate": {
-            "title": "🎯 Suggested Campus Resources",
-            "items": [
-                {"name": "📚 Academic Coaching", "description": ""},
-                {"name": "🧘 Mindfulness Workshops", "description": ""},
-                {"name": "📎 Tutoring Services", "description": ""},
-            ]
-        },
-        "Low": {
-            "title": "🎯 Suggested Campus Resources",
-            "items": [
-                {"name": "🎉 Keep up the great work!", "description": ""},
-                {"name": "🤝 Peer Mentoring", "description": ""},
-                {"name": "🗣️ Join a wellness event", "description": ""},
-            ]
-        }
+    VANDAL_LINKS = {
+        "athletics": "https://govandals.com",
+        "swim": "https://www.uidaho.edu/recreation/swim-center",
+        "rec": "https://www.uidaho.edu/recreation/rec-center"
     }
 
-    out = resources.get(burnout_level, resources["Moderate"])
+    resources = {"title": "🎯 Suggested Campus Resources", "items": []}
 
-    # Add food support card if relevant
+    if burnout_level == "High":
+        resources["items"].extend([
+            {"name": "🧠 Counseling Services", "url": "https://www.uidaho.edu/current-students/cmhc",
+             "description": "Free short-term counseling and mental health support."},
+            {"name": "📘 TRIO Student Support Services", "url": "https://www.uidaho.edu/current-students/academic-support/asp/sss",
+             "description": "Academic advising, tutoring, and life coaching for eligible students."},
+            {"name": "🏛️ Vandal Success Center", "url": "https://www.uidaho.edu/current-students/academic-support/asp",
+             "description": "Tutoring, time management, and academic skills help."},
+        ])
+
+    elif burnout_level == "Moderate":
+        # Conditional adds
+        if data:
+            if data.get("stress", 3) >= 4 or data.get("anxiety", 3) >= 4:
+                resources["items"].append({"name": "🧘 Mindfulness Workshops",
+                                           "description": "Practical tools for stress & anxiety."})
+            if data.get("focus", 3) <= 2 or data.get("sleep", 3) <= 2:
+                resources["items"].append({"name": "📎 Tutoring Services",
+                                           "description": "Extra support for challenging classes."})
+            if data.get("motivation", 3) <= 2:
+                resources["items"].append({"name": "📚 Academic Coaching",
+                                           "description": "Accountability and strategies for staying on track."})
+
+        # Add positive engagement
+        resources["items"].extend([
+            {"name": "🏋️ Student Rec Center", "url": VANDAL_LINKS["rec"],
+             "description": "Gym, sports courts, and rock climbing wall."},
+            {"name": "🏊 Swim Center (free with student ID)", "url": VANDAL_LINKS["swim"],
+             "description": "Refresh yourself at open swim hours."}
+        ])
+
+    elif burnout_level == "Low":
+        resources["items"].extend([
+            {"name": "🎉 Keep up the great work!", "description": "Stay balanced and enjoy yourself."},
+            {"name": "🏈 Vandal Athletics", "url": VANDAL_LINKS["athletics"],
+             "description": "Check schedules for football, basketball, volleyball and more."},
+            {"name": "🤝 Peer Mentoring", "description": "Support others and build connections."},
+            {"name": "🏋️ Student Rec Center", "url": VANDAL_LINKS["rec"],
+             "description": "Stay active with gym, games, or climbing."},
+        ])
+
+    # Food support if needed
     if data and data.get("food_security", 3) <= 2:
-        out = dict(out)  # shallow copy
-        out.setdefault("items", [])
-        out["items"].insert(0, {
+        resources["items"].insert(0, {
             "name": "🍽️ Vandal Food Pantry & Food Resources",
             "url": "https://www.uidaho.edu/current-students/dean-of-students/student-care/food-insecurity",
             "description": "Free groceries and support if money/food is tight."
         })
-    return out
 
-def generate_advanced_feedback(data):
-    """Generate personalized feedback based on user inputs (Energy removed)."""
-    feedback = []
+    # Cap at 4 items → keep it short and relevant
+    resources["items"] = resources["items"][:4]
 
+    return resources
+
+
+# ---------- Feedback
+def generate_advanced_feedback(data, emotion=None):
+    """
+    Build short, varied, targeted feedback based on slider signals + journal.
+    Returns 2–4 sentences, plus Farmers Market suggestion when appetite is low.
+    """
     mood = data['mood']
     stress = data['stress']
     focus = data['focus']
@@ -112,117 +155,173 @@ def generate_advanced_feedback(data):
     anxiety = data['anxiety']
     appetite = data['appetite']
     food_security = data.get('food_security', 3)
+    journal = (data.get('journal') or "").strip()
 
-    # 1. Red Flag: Multiple lows
-    criticals = [mood, focus, sleep, motivation]
-    n_crit_low = sum(1 for v in criticals if v <= 2)
-    if n_crit_low >= 3:
-        feedback.append("🚩 Multiple areas are low. Please consider talking to a counselor or trusted person—you're not alone.")
+    hi = lambda v: v >= 4
+    lo = lambda v: v <= 2
+    ok = lambda v: v == 3
 
-    # 2. Key combos (ordered by importance)
-    if stress >= 4 and sleep <= 2:
-        feedback.append("High stress and poor sleep—try winding down early and limit screens before bed.")
-    if mood >= 4 and focus <= 2:
-        feedback.append("Good mood but low focus? Try a quick mindfulness break or set a tiny, clear goal.")
-    if motivation <= 2 and appetite <= 2:
-        feedback.append("Low motivation and low appetite—give yourself permission to take it easy and reach out if needed.")
-    if appetite <= 2 and stress >= 4:
-        feedback.append("Poor appetite and high stress: regular, small snacks and hydration can help.")
-    if anxiety >= 4 and sleep <= 2:
-        feedback.append("High anxiety and poor sleep—try calming routines before bed.")
-    if motivation <= 2 and mood <= 2:
-        feedback.append("Both mood and motivation are low. Start with a small, easy win.")
-    if stress >= 4 and anxiety >= 4:
-        feedback.append("High stress and anxiety—try breathing exercises or grounding techniques.")
-    if mood >= 4 and stress >= 4:
-        feedback.append("Positive mood even under stress—keep using your coping skills!")
+    signals = {
+        "mood_hi": hi(mood), "mood_lo": lo(mood),
+        "stress_hi": hi(stress), "stress_lo": lo(stress),
+        "focus_hi": hi(focus), "focus_lo": lo(focus),
+        "sleep_hi": hi(sleep), "sleep_lo": lo(sleep),
+        "motivation_hi": hi(motivation), "motivation_lo": lo(motivation),
+        "anxiety_hi": hi(anxiety), "anxiety_lo": lo(anxiety),
+        "appetite_hi": hi(appetite), "appetite_lo": lo(appetite), "appetite_ok": ok(appetite),
+        "food_low": food_security <= 2,
+    }
 
-    # 3. Individual sliders (short tips)
-    if mood <= 2:
-        feedback.append("Mood is low—small pleasures or talking to a friend might help.")
-    elif mood >= 4:
-        feedback.append("Great mood! Keep nurturing it with things you enjoy.")
+    # Priority care if multiple core areas low
+    core = [mood, focus, sleep, motivation]
+    priority = []
+    if sum(1 for v in core if v <= 2) >= 3:
+        priority.append(_pick([
+            "🚩 Several areas look tough today. Consider reaching out to a counselor or a trusted person—support can make things lighter.",
+            "🚩 You flagged a few low spots. A quick check-in with campus support or a friend could really help right now."
+        ], f"{date.today()}-priority"))
 
-    if stress >= 4:
-        feedback.append("High stress: take 5 minutes to breathe deeply or walk.")
-    elif stress <= 2:
-        feedback.append("Low stress—good job managing your workload.")
+    # Combo tips
+    combos = []
+    if signals["stress_hi"] and signals["sleep_lo"]:
+        combos.append(_pick([
+            "High stress + poor sleep—try a gentle wind-down tonight and limit screens 60 minutes before bed.",
+            "Stress and sleep are clashing—short breathing sets and a set lights-out time can help."
+        ], f"{date.today()}-combo1"))
 
-    if focus <= 2:
-        feedback.append("Focus is low—try a distraction-free work block or Pomodoro technique.")
-    elif focus >= 4:
-        feedback.append("High focus—this is a good time for important work.")
+    if signals["mood_hi"] and signals["focus_lo"]:
+        combos.append(_pick([
+            "Mood is good but focus is off—try a 20-minute distraction-free block to get rolling.",
+            "Feeling upbeat but unfocused—set one tiny, clear task and start there."
+        ], f"{date.today()}-combo2"))
 
-    if sleep <= 2:
-        feedback.append("Very poor sleep—rest tonight if you can.")
-    elif sleep >= 4:
-        feedback.append("Great sleep—good rest helps everything.")
+    if signals["motivation_lo"] and signals["appetite_lo"]:
+        combos.append(_pick([
+            "Motivation and appetite are low—take it easy and aim for small, regular snacks.",
+            "Low drive + low appetite—be kind to yourself; quick, simple nutrition can help your energy."
+        ], f"{date.today()}-combo3"))
 
-    if motivation <= 2:
-        feedback.append("Motivation is low—set a super-easy task to build momentum.")
-    elif motivation >= 4:
-        feedback.append("Highly motivated! Use that drive on your priorities.")
+    if signals["appetite_lo"] and signals["stress_hi"]:
+        combos.append("Poor appetite with high stress—schedule small snacks and hydration breaks.")
+    if signals["anxiety_hi"] and signals["sleep_lo"]:
+        combos.append("High anxiety and rough sleep—try a calming routine before bed (dim lights, slow breaths).")
+    if signals["motivation_lo"] and signals["mood_lo"]:
+        combos.append("Motivation and mood are both low—pick a super-small win to start momentum.")
+    if signals["stress_hi"] and signals["anxiety_hi"]:
+        combos.append("Stress and anxiety are high—2–3 minutes of paced breathing can help ground you.")
+    if signals["mood_hi"] and signals["stress_hi"]:
+        combos.append("Good mood under stress—keep leaning on the coping skills that are working.")
 
-    if anxiety >= 4:
-        feedback.append("Anxiety is high—try breathing exercises or talk to someone.")
-    elif anxiety <= 2:
-        feedback.append("Low anxiety—keep up your calming routines.")
+    # Single-slider tips (short + positive)
+    singles = []
+    if signals["mood_lo"]:
+        singles.append("Mood is low—tiny pleasures or a quick chat with a friend can help.")
+    elif signals["mood_hi"]:
+        singles.append("Great mood—keep feeding it with things that feel good.")
+    if signals["stress_hi"]:
+        singles.append("Stress is high—take a 5-minute breathing or stretch break.")
+    elif signals["stress_lo"]:
+        singles.append("Low stress—nice work pacing your workload.")
+    if signals["focus_lo"]:
+        singles.append("Focus is low—try a Pomodoro block with notifications off.")
+    elif signals["focus_hi"]:
+        singles.append("Focus looks strong—tackle a priority while the groove is there.")
+    if signals["sleep_lo"]:
+        singles.append("Sleep was rough—if possible, plan a wind-down and protect tonight’s rest.")
+    elif signals["sleep_hi"]:
+        singles.append("Great sleep—everything benefits from that.")
+    if signals["motivation_lo"]:
+        singles.append("Motivation is low—set a 2-minute starter task.")
+    elif signals["motivation_hi"]:
+        singles.append("Motivation is high—aim it at your most important task.")
+    if signals["anxiety_hi"]:
+        singles.append("Anxiety is high—try a short grounding exercise (5-4-3-2-1).")
+    elif signals["anxiety_lo"]:
+        singles.append("Low anxiety—keep up what’s helping you stay calm.")
+    if signals["appetite_lo"]:
+        singles.append("Appetite is low—don’t skip meals; light, regular snacks help.")
+    elif signals["appetite_hi"]:
+        singles.append("Strong appetite—lean into nourishing, balanced meals.")
+    elif signals["appetite_ok"]:
+        singles.append("Balanced appetite—good sign for steady energy.")
 
-    if appetite <= 2:
-        feedback.append("Low appetite—don't skip meals; small snacks can help.")
-    elif appetite >= 4:
-        feedback.append("Strong appetite—opt for nourishing, balanced meals.")
-    elif appetite == 3:
-        feedback.append("Balanced appetite—this is a good wellness sign.")
+    # Journal-aware nudges
+    journal_lines = []
+    low = journal.lower()
+    if _has(low, "exam", "midterm", "final", "quiz", "deadline", "assignment", "paper"):
+        journal_lines.append("Deadlines ahead—map the next small step and a short, focused block.")
+    if _has(low, "money", "rent", "bills", "food", "groceries"):
+        journal_lines.append("Money stress is heavy—if food feels tight, campus resources can help.")
+    if _has(low, "roommate", "conflict", "fight", "argue"):
+        journal_lines.append("Roommate tension—try a calm check-in or ask a neutral friend/RA for perspective.")
+    if _has(low, "homesick", "lonely", "alone"):
+        journal_lines.append("Homesick happens—brief social time or a familiar routine can help.")
 
-    # 4. All thriving (Energy removed)
-    if (all(v >= 4 for v in [mood, sleep, motivation]) and
-        stress <= 2 and anxiety <= 2 and focus >= 4 and appetite == 3 and food_security >= 4):
-        feedback.append("🌱 You're thriving across all areas! Keep up your healthy habits.")
+    # Emotion tone softener
+    if emotion and emotion.get("emotion") in {"sadness", "fear", "anger", "anxiety"} and emotion.get("confidence", 0) > 0.7:
+        journal_lines.append("Thanks for sharing—what you're feeling makes sense. Small steps count.")
 
-    # 5. Catch-all
-    if not feedback:
-        feedback.append("Your responses look balanced today. Keep prioritizing your well-being!")
+    # Risk-gated campus suggestion
+    wellness_score = calculate_wellness_score(data)
+    level = get_burnout_level(wellness_score)
+    campus = []
+    if level in ("Low", "Moderate"):
+        campus_pools = [
+            f"Recharge with something fun—check Vandal Athletics at <a href='{VANDAL_LINKS['athletics']}' target='_blank' rel='noopener'>govandals.com</a> and catch a game.",
+            f"Swim is free for students during public hours—see <a href='{VANDAL_LINKS['swim']}' target='_blank' rel='noopener'>Swim Center</a> info.",
+            f"Drop by the Student Rec Center—gym, courts, even climbing: <a href='{VANDAL_LINKS['rec']}' target='_blank' rel='noopener'>Rec Center</a>."
+        ]
+        campus.append(_pick(campus_pools, f"{date.today()}-campus"))
 
-    # 3b. Food security (optional slider)
-    if food_security is not None:
-        if food_security <= 2:
-            feedback.append(
-                "If money is tight for meals, you’re not alone—please consider campus and local resources that can help with groceries or meal support."
-            )
-        elif food_security == 3:
-            feedback.append("Food budget feels tight—planning simple, low-cost meals might reduce stress.")
-        elif food_security >= 4:
-            feedback.append("Great that your food budget feels okay—keeping easy, nourishing snacks handy can support energy.")
+    # Food security mention
+    food_lines = []
+    if signals["food_low"]:
+        food_lines.append("If meals are tight, you’re not alone—campus and local options can help with groceries.")
 
-    # Return top 2 unique feedback items
-    unique_feedback = []
-    for tip in feedback:
-        if tip not in unique_feedback:
-            unique_feedback.append(tip)
-        if len(unique_feedback) == 2:
-            break
+    # Assemble final 2–4 sentences (priority → one combo → one single → maybe journal → maybe campus → maybe food)
+    seed_key = f"{date.today()}-{mood}{stress}{focus}{sleep}{motivation}{anxiety}{appetite}{food_security}-{journal[:40]}"
+    lines = []
+    if priority:
+        lines.append(priority[0])
+    if combos:
+        lines.append(combos[0])
+    if singles:
+        lines.append(_pick(singles, seed_key))
+    if journal_lines:
+        lines.append(_pick(journal_lines, seed_key))
+    if campus:
+        lines.append(campus[0])
+    if food_lines:
+        lines.append(food_lines[0])
 
-    final_feedback = " ".join(unique_feedback)
-
-    # Always add Farmers Market suggestion if appetite is low
+    # Farmers Market add-on if appetite low
+    farmers_market_message = None
     if appetite <= 2:
         farmers_market_message = (
-            " 🍎 Looking for ways to gently boost your appetite? "
-            "Try exploring the <a href='https://www.ci.moscow.id.us/197/Community-Events-Moscow-Farmers-Market' "
-            "target='_blank' rel='noopener noreferrer'>Moscow Farmers Market</a> — a lively Saturday morning event in downtown Moscow "
-            "filled with local produce, artisan foods, and friendly faces. Open May–October, 8:00 AM to 1:00 PM."
+            "🍎 To gently spark appetite, try the "
+            "<a href='https://www.ci.moscow.id.us/197/Community-Events-Moscow-Farmers-Market' "
+            "target='_blank' rel='noopener'>Moscow Farmers Market</a> on Saturdays (May–Oct, 8am–1pm)."
         )
-        final_feedback += " " + farmers_market_message
 
-    return final_feedback
+    # De-dupe, trim
+    seen = set(); final = []
+    for s in lines:
+        if s and s not in seen:
+            final.append(s); seen.add(s)
+    final = final[:4]
+    if not final:
+        final = ["Your responses look balanced today. Keep prioritizing your well-being!"]
+    if farmers_market_message:
+        final.append(farmers_market_message)
 
+    return " ".join(final)
+
+# ---------- Optional journal emotion
 def analyze_journal_emotion(journal_text):
-    """Emotion analysis with negation overrides; lazily load transformer."""
+    """Emotion analysis with simple negation overrides; lazily load transformer."""
     txt = (journal_text or "").strip()
     if not txt or not USE_EMOTION:
         return None
-
     try:
         low = txt.lower()
         if re.search(r"not[\s\w]*sad", low):
@@ -240,7 +339,6 @@ def analyze_journal_emotion(journal_text):
                 model="bhadresh-savani/distilbert-base-uncased-emotion",
                 return_all_scores=True
             )
-
         result = EMOTION_PIPELINE(txt)[0]
         top = max(result, key=lambda x: x['score'])
         return {"emotion": top['label'], "confidence": float(top['score'])}
@@ -248,43 +346,43 @@ def analyze_journal_emotion(journal_text):
         print(f"[emotion] error: {e}")
         return {"emotion": "neutral", "confidence": 0.5}
 
+# ---------- Routes
 @app.route('/')
 def index():
-    """Render the main dashboard page"""
     return render_template('index.html')
 
 @app.route('/api/submit', methods=['POST'])
 def submit_checkin():
-    """Process wellness check-in submission"""
+    """Process wellness check-in submission."""
     try:
         data = request.get_json()
 
-        # Validate that all required fields are present (Energy removed)
+        # Validate required fields
         required_fields = ['mood', 'stress', 'focus', 'sleep', 'motivation', 'anxiety', 'appetite', 'food_security']
         for field in required_fields:
             if field not in data:
                 return jsonify({'error': f'Missing field: {field}'}), 400
 
-        # Check if all values are default (3)
-        all_default = all(data[field] == 3 for field in required_fields)
-        if all_default:
+        # Reject all-default (3) submissions
+        if all(data[field] == 3 for field in required_fields):
             return jsonify({
-                'error': 'It looks like you haven\'t updated any inputs. Please adjust them to reflect your current state.',
+                'error': "It looks like you haven't updated any inputs. Please adjust them to reflect your current state.",
                 'type': 'validation'
             }), 400
 
-        # Calculate wellness metrics
+        # Calculate core metrics
         wellness_score = calculate_wellness_score(data)
         burnout_level = get_burnout_level(wellness_score)
-        resources = get_resources(burnout_level, data)
-        feedback = generate_advanced_feedback(data)
 
-        # Analyze journal if provided
+        # Emotion (if any) BEFORE feedback so we can use it
         emotion_analysis = None
-        if 'journal' in data and data['journal'].strip():
+        if 'journal' in data and (data['journal'] or '').strip():
             emotion_analysis = analyze_journal_emotion(data['journal'])
 
-        # Prepare response
+        # Personalized feedback + resources
+        feedback = generate_advanced_feedback(data, emotion=emotion_analysis)
+        resources = get_resources(burnout_level, data)
+
         response = {
             'success': True,
             'wellness_score': round(wellness_score, 2),
@@ -293,7 +391,6 @@ def submit_checkin():
             'feedback': feedback,
             'emotion_analysis': emotion_analysis
         }
-
         return jsonify(response)
 
     except Exception as e:
@@ -301,7 +398,6 @@ def submit_checkin():
 
 @app.route('/api/emojis')
 def get_emojis():
-    """Get emoji mappings for frontend"""
     return jsonify(EMOJIS)
 
 @app.route('/health')
