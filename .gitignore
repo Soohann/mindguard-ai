@@ -13,3 +13,5 @@ __pycache__/
 venv/
 flask-version/venv/
 streamlit-version/venv/
+flask-version/.venv/
+flask-version-backup/
