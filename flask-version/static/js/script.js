@@ -6,7 +6,8 @@ class MindGuardApp {
         this.currentSlider = null;
         this.sliderValues = {
             mood: 3, stress: 3, focus: 3, sleep: 3,
-            energy: 3, motivation: 3, anxiety: 3, appetite: 3
+            motivation: 3, anxiety: 3, appetite: 3,
+            food_security: 3
         };
         
         this.init();
@@ -44,10 +45,10 @@ class MindGuardApp {
                     "stress": {1: "😌", 2: "😕", 3: "😟", 4: "😣", 5: "😫"},
                     "focus": {1: "😵", 2: "😕", 3: "😐", 4: "🙂", 5: "😎"},
                     "sleep": {1: "😴", 2: "🥱", 3: "😐", 4: "🙂", 5: "😌"},
-                    "energy": {1: "🥱", 2: "😪", 3: "😐", 4: "😊", 5: "🤩"},
                     "motivation": {1: "🥀", 2: "😕", 3: "😐", 4: "🙂", 5: "🚀"},
                     "anxiety": {1: "😌", 2: "😯", 3: "😬", 4: "😰", 5: "😱"},
-                    "appetite": {1: "🥄", 2: "🍽️", 3: "😐", 4: "🥗", 5: "🍱"}
+                    "appetite": {1: "🥄", 2: "🍽️", 3: "😐", 4: "🥗", 5: "🍱"},
+                    "food_security": {1:"🍞",2:"🍽️",3:"🙂",4:"🛒",5:"🧺"}
                 };
             }
         } catch (error) {
@@ -182,10 +183,10 @@ class MindGuardApp {
             'stress': 'Stress', 
             'focus': 'Focus',
             'sleep': 'Sleep Quality',
-            'energy': 'Energy Level',
             'motivation': 'Motivation',
             'anxiety': 'Anxiety',
-            'appetite': 'Appetite'
+            'appetite': 'Appetite',
+            food_security: 'Food Security' 
         };
         return displayNames[sliderName] || sliderName;
     }
@@ -251,7 +252,7 @@ class MindGuardApp {
     }
 
     isAllDefault(formData) {
-        const sliderFields = ['mood', 'stress', 'focus', 'sleep', 'energy', 'motivation', 'anxiety', 'appetite'];
+        const sliderFields = ['mood', 'stress', 'focus', 'sleep','motivation', 'anxiety', 'appetite', 'food_security' ];
         return sliderFields.every(field => formData[field] === 3);
     }
 
@@ -304,24 +305,30 @@ class MindGuardApp {
     }
 
     displayResources(container, resourcesData) {
-        let html = '';
-        
-        if (resourcesData.items && resourcesData.items.length > 0) {
-            if (resourcesData.items.length >= 3 && resourcesData.items[0].url) {
-                // High burnout - show full resources with links
-                resourcesData.items.forEach(item => {
-                    html += `<p><strong><a href="${item.url}" target="_blank" rel="noopener noreferrer">${item.name}</a></strong><br>${item.description}</p>`;
-                });
-            } else {
-                // Moderate/Low burnout - simple list
-                resourcesData.items.forEach(item => {
-                    html += `<p>- ${item.name}</p>`;
-                });
-            }
-        }
-        
-        container.innerHTML = html;
+  if (!resourcesData || !Array.isArray(resourcesData.items)) {
+    container.innerHTML = "";
+    return;
+  }
+
+  let html = "";
+  resourcesData.items.forEach(item => {
+    const name = item.name || "";
+    const desc = item.description || "";
+    const url = item.url;
+
+    if (url) {
+      html += `<p>
+        <strong><a href="${url}" target="_blank" rel="noopener noreferrer">${name}</a></strong>
+        ${desc ? `<br>${desc}` : ``}
+      </p>`;
+    } else {
+      html += `<p>• ${name}</p>`;
     }
+  });
+
+  container.innerHTML = html;
+}
+
 
     displayEmotionAnalysis(container, emotionData) {
         const confidencePercent = Math.round(emotionData.confidence * 100);

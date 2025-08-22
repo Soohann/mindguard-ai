@@ -105,7 +105,7 @@
                         <!-- Right Column -->
                         <div class="column">
                             <!-- Sleep Slider -->
-                            <div class="element-container spaced-slider">
+                            <div class="element-container">
                                 <h3 id="sleep-label">😐 Sleep Quality</h3>
                                 <div class="stSlider">
                                     <div class="custom-slider" data-slider="sleep">
@@ -118,22 +118,10 @@
                                 <div class="help-tooltip">1 = Very poor, 5 = Well-rested</div>
                             </div>
 
-                            <!-- Energy Slider -->
-                            <div class="element-container spaced-slider">
-                                <h3 id="energy-label">😐 Energy Level</h3>
-                                <div class="stSlider">
-                                    <div class="custom-slider" data-slider="energy">
-                                        <div class="slider-track"></div>
-                                        <div class="slider-fill"></div>
-                                        <div class="slider-thumb"></div>
-                                    </div>
-                                    <input type="range" min="1" max="5" value="3" class="hidden-slider" name="energy" id="energy">
-                                </div>
-                                <div class="help-tooltip">1 = Exhausted, 5 = Very energetic</div>
-                            </div>
+                            
 
                             <!-- Anxiety Slider -->
-                            <div class="element-container spaced-slider">
+                            <div class="element-container">
                                 <h3 id="anxiety-label">😬 Anxiety</h3>
                                 <div class="stSlider">
                                     <div class="custom-slider" data-slider="anxiety">
@@ -147,7 +135,7 @@
                             </div>
 
                             <!-- Appetite Slider -->
-                            <div class="element-container spaced-slider">
+                            <div class="element-container">
                                 <h3 id="appetite-label">😐 Appetite</h3>
                                 <div class="stSlider">
                                     <div class="custom-slider" data-slider="appetite">
@@ -158,6 +146,31 @@
                                     <input type="range" min="1" max="5" value="3" class="hidden-slider" name="appetite" id="appetite">
                                 </div>
                                 <div class="help-tooltip">1 = Poor appetite, 5 = Very strong appetite</div>
+
+
+
+
+                                <!-- Food Security Slider -->
+<div class="element-container">
+    <h3 id="food_security-label">😐 Food Security</h3>
+    <div class="stSlider">
+        <div class="custom-slider" data-slider="food_security">
+            <div class="slider-track"></div>
+            <div class="slider-fill"></div>
+            <div class="slider-thumb"></div>
+        </div>
+        <input type="range" min="1" max="5" value="3" class="hidden-slider" name="food_security" id="food_security">
+    </div>
+    <div class="help-tooltip">1 = No money for food, 5 = Always have enough</div>
+</div>
+
+
+
+
+                                    
+
+
+                        
                             </div>
                         </div>
                     </div>
