@@ -1,164 +1,387 @@
-/* Exact Streamlit CSS Match */
+/* MindGuard - Professional UI Design System */
 
-/* Import Streamlit fonts */
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap');
+/* Import modern fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/* Reset and base - Exact Streamlit */
+/* CSS Variables for Design System - Stunning Visual Palette */
+:root {
+  /* Colors - Beautiful Modern Palette */
+  --primary-600: #6366f1;
+  --primary-700: #4f46e5;
+  --primary-50: #f0f9ff;
+  --primary-100: #e0f2fe;
+  --primary-200: #bae6fd;
+  --primary-300: #7dd3fc;
+  
+  --gray-50: #fafafa;
+  --gray-100: #f4f4f5;
+  --gray-200: #e4e4e7;
+  --gray-300: #d4d4d8;
+  --gray-400: #a1a1aa;
+  --gray-500: #71717a;
+  --gray-600: #52525b;
+  --gray-700: #3f3f46;
+  --gray-800: #27272a;
+  --gray-900: #18181b;
+  
+  --success-50: #f0fdf4;
+  --success-100: #dcfce7;
+  --success-500: #22c55e;
+  --success-600: #16a34a;
+  
+  --warning-50: #fefce8;
+  --warning-100: #fef3c7;
+  --warning-500: #eab308;
+  --warning-600: #ca8a04;
+  
+  --error-50: #fef2f2;
+  --error-100: #fee2e2;
+  --error-500: #ef4444;
+  --error-600: #dc2626;
+  
+  --info-50: #eff6ff;
+  --info-100: #dbeafe;
+  --info-500: #3b82f6;
+  --info-600: #2563eb;
+  
+  /* Stunning Wellness Scale Colors */
+  --wellness-excellent: #10b981; /* Vibrant emerald */
+  --wellness-good: #84cc16;      /* Fresh lime */
+  --wellness-neutral: #f59e0b;   /* Warm amber */
+  --wellness-poor: #f97316;      /* Vibrant orange */
+  --wellness-critical: #ef4444;  /* Bold red */
+  
+  /* Typography */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', Consolas, monospace;
+  
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  
+  /* Border radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 250ms ease-in-out;
+  --transition-slow: 350ms ease-in-out;
+}
+
+/* Reset and Base Styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-html, body {
-    height: 100%;
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
 }
 
 body {
-    font-family: "Source Sans Pro", sans-serif;
-    background-color: #ffffff;
-    color: #262730;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
+  font-family: var(--font-primary);
+  background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #f0f9ff 100%);
+  color: var(--gray-800);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
 }
 
-/* Exact Streamlit App Structure */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* App Container */
 .stApp {
     display: flex;
     flex-direction: column;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+  min-height: 100vh;
+  width: 100%;
 }
 
 .main {
+  flex: 1;
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: #ffffff;
+  padding: var(--space-lg) var(--space-md);
 }
 
 .block-container {
-    max-width: 736px;
-    padding-top: 5rem;
-    padding-bottom: 10rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    margin: 0 auto;
-    position: relative;
-    width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-xl);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  padding: var(--space-xl);
+  position: relative;
+  overflow: hidden;
 }
 
-/* Exact Streamlit Element Container */
-.element-container {
-    margin-bottom: 1rem;
-    width: 100%;
+.block-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #6366f1, #10b981, #f59e0b, #ef4444);
+  animation: gradientShift 8s ease-in-out infinite;
 }
 
-/* Exact Streamlit Typography */
+@keyframes gradientShift {
+  0%, 100% { 
+    background: linear-gradient(90deg, #6366f1, #10b981, #f59e0b, #ef4444);
+  }
+  50% { 
+    background: linear-gradient(90deg, #10b981, #f59e0b, #ef4444, #6366f1);
+  }
+}
+
+/* Typography System */
 h1 {
-    font-weight: 700;
-    color: rgb(49, 51, 63);
-    font-size: 2.5rem;
-    line-height: 1.2;
-    margin-bottom: 0px;
-    margin-top: 0px;
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: var(--space-md);
+  letter-spacing: -0.025em;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  position: relative;
+}
+
+h1::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+  border-radius: 2px;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+  50% { opacity: 0.7; transform: translateX(-50%) scale(1.1); }
 }
 
 h2 {
-    font-weight: 600;
-    color: rgb(49, 51, 63);
-    font-size: 1.75rem;
-    line-height: 1.6;
-    margin-bottom: 0px;
-    margin-top: 0px;
+  font-size: 1.875rem;
+  font-weight: 600;
+  color: var(--gray-800);
+  margin-bottom: var(--space-lg);
+  text-align: center;
 }
 
 h3 {
+  font-size: 1.25rem;
     font-weight: 600;
-    color: rgb(49, 51, 63);
-    font-size: 1.125rem;
-    line-height: 1.6;
-    margin-bottom: 0px;
-    margin-top: 0px;
+  color: var(--gray-700);
+  margin-bottom: var(--space-sm);
 }
 
 h4 {
+  font-size: 1.125rem;
     font-weight: 600;
-    color: rgb(49, 51, 63);
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 0px;
-    margin-top: 0px;
+  color: var(--gray-700);
+  margin-bottom: var(--space-sm);
 }
 
 p {
     font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 0px;
-    margin-top: 0px;
-    color: rgb(49, 51, 63);
+  line-height: 1.7;
+  color: var(--gray-600);
+  margin-bottom: var(--space-md);
 }
 
-/* Exact Streamlit Caption */
 .caption {
     font-size: 0.875rem;
-    color: rgba(49, 51, 63, 0.6);
-    line-height: 1.6;
+  color: var(--gray-500);
+  line-height: 1.5;
 }
 
 .stCaption {
     font-size: 0.75rem;
-    color: rgba(49, 51, 63, 0.6);
-    line-height: 1.6;
+  color: var(--gray-400);
     text-align: center;
+  padding: var(--space-lg);
+  border-top: 1px solid var(--gray-200);
+  margin-top: var(--space-2xl);
 }
 
-/* Exact Streamlit Divider */
+/* Element Containers */
+.element-container {
+  margin-bottom: var(--space-lg);
+  width: 100%;
+}
+
+/* Ensure consistent spacing for slider elements */
+.column .element-container {
+  margin-bottom: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Dividers */
 .streamlit-divider {
     border: none;
     height: 1px;
-    background-color: rgba(49, 51, 63, 0.2);
-    margin: 1rem 0;
+  background: linear-gradient(90deg, transparent, var(--gray-300), transparent);
+  margin: var(--space-2xl) 0;
 }
 
-/* Exact Streamlit Columns */
-/* Exact Streamlit Columns */
+/* Grid Layout - Equal sized columns */
 .streamlit-columns {
-    display: flex;
-    justify-content: space-between;
-    column-gap: 3rem;  /* increase horizontal spacing between columns */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2xl);
     width: 100%;
+  align-items: start;
 }
 
 .column {
-    flex: 1;
-    min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
 }
 
-/* Exact Streamlit Slider Container */
+/* Slider Components - Complete Redesign */
 .stSlider {
-    margin-bottom: 1rem;
-    position: relative;
+  margin-bottom: var(--space-md);
+  position: relative;
 }
 
-/* Hide default slider input */
-.hidden-slider {
-    display: none;
+.slider-container {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.8));
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-lg);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-/* Custom slider track - Exact Streamlit appearance */
+.slider-container:hover {
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 
+    0 8px 25px -5px rgba(99, 102, 241, 0.25),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px) scale(1.01);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 249, 255, 0.9));
+}
+
+.slider-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ef4444, #f97316, #f59e0b, #84cc16, #10b981);
+  opacity: 0.2;
+  transition: opacity var(--transition-normal);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.slider-container:hover::before {
+  opacity: 0.6;
+  animation: gradientPulse 2s ease-in-out infinite;
+}
+
+@keyframes gradientPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.8; }
+}
+
+.slider-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm); /* Reduced margin for more compact rectangular shape */
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--gray-700);
+  min-height: 24px; /* Consistent label height */
+}
+
+.slider-emoji {
+  font-size: 1.5rem;
+  transition: transform var(--transition-fast);
+}
+
+.slider-value-display {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.875rem;
+  min-width: 2rem;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
 .custom-slider {
-    position: relative;
-    width: 100%;
-    height: 6px;
-    cursor: pointer;
-    border-radius: 3px;
-    background-color: rgb(240, 242, 246);
-    margin: 1rem 0;
+  position: relative;
+  width: 100%;
+  height: 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgba(229, 231, 235, 0.8), rgba(243, 244, 246, 0.8));
+  margin: var(--space-md) 0;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .slider-track {
@@ -167,8 +390,8 @@ p {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgb(240, 242, 246);
-    border-radius: 3px;
+  background: var(--gray-200);
+  border-radius: var(--radius-sm);
 }
 
 .slider-fill {
@@ -176,263 +399,309 @@ p {
     top: 0;
     left: 0;
     height: 100%;
-    border-radius: 3px;
-    transition: all 0.3s ease;
-    background-color: rgb(240, 242, 246);
+  border-radius: var(--radius-sm);
+  transition: width 0.2s ease-out, background-color 0.2s ease-out;
+  background: var(--wellness-neutral);
 }
 
-/* Exact Streamlit slider thumb */
 .slider-thumb {
-    position: absolute;
-    top: 50%;
-    width: 20px;
-    height: 20px;
-    background: rgb(255, 255, 255);
-    border-radius: 50%;
-    cursor: pointer;
-    transform: translate(-50%, -50%);
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px,
-                rgba(0, 0, 0, 0.14) 0px 2px 2px 0px,
-                rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
-    transition: all 0.3s ease;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    color: white;
-    font-weight: bold;
+  position: absolute;
+  top: 50%;
+  width: 26px;
+  height: 26px;
+  background: linear-gradient(135deg, #ffffff, #f8fafc);
+  border: 3px solid var(--wellness-neutral);
+  border-radius: 50%;
+  cursor: grab;
+  transform: translate(-50%, -50%);
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: left 0.2s ease-out, border-color 0.2s ease-out, transform 0.2s ease-out;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider-thumb:hover {
+  transform: translate(-50%, -50%) scale(1.15);
+  box-shadow: 
+    0 8px 16px rgba(0, 0, 0, 0.2),
+    0 4px 8px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border-width: 4px;
+}
+
+.slider-thumb:active {
+  cursor: grabbing;
+  transform: translate(-50%, -50%) scale(1.1);
 }
 
 .thumb-value {
     position: absolute;
-    top: -22px;
-    font-size: 12px;
-    font-weight: bold;
-    color: inherit;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gray-800);
+  color: white;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  pointer-events: none;
 }
 
-.slider-thumb:hover {
-    transform: translate(-50%, -50%) scale(1.05);
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 5px -1px, rgba(0, 0, 0, 0.14) 0px 6px 10px 0px, rgba(0, 0, 0, 0.12) 0px 1px 18px 0px;
+.thumb-value::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: var(--gray-800);
 }
 
-/* Color classes for slider fills - Your requested colors */
-.fill-color-1 { background-color: #2ECC71; }   /* bright green (best) */
-.fill-color-2 { background-color: #A9DFBF; }   /* light green */
-.fill-color-3 { background-color: #F7DC6F; }   /* yellow */
-.fill-color-4 { background-color: #F5B041; }   /* orange */
-.fill-color-5 { background-color: #E74C3C; }   /* red (worst) */
+.slider-thumb:hover .thumb-value {
+  opacity: 1;
+}
 
+.help-tooltip {
+  font-size: 0.875rem;
+  color: var(--gray-500);
+  margin-top: var(--space-sm);
+  line-height: 1.4;
+  font-style: italic;
+  min-height: 32px; /* Reduced height for more rectangular proportions */
+  display: flex;
+  align-items: flex-start;
+}
 
-/* Thumb colors - keep Streamlit red border */
+/* Beautiful Color Classes - Enhanced */
+.fill-color-1 { 
+  background: linear-gradient(135deg, #10b981, #059669); 
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+}
+.fill-color-2 { 
+  background: linear-gradient(135deg, #84cc16, #65a30d); 
+  box-shadow: 0 2px 4px rgba(132, 204, 22, 0.3);
+}
+.fill-color-3 { 
+  background: linear-gradient(135deg, #f59e0b, #d97706); 
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+}
+.fill-color-4 { 
+  background: linear-gradient(135deg, #f97316, #ea580c); 
+  box-shadow: 0 2px 4px rgba(249, 115, 22, 0.3);
+}
+.fill-color-5 { 
+  background: linear-gradient(135deg, #ef4444, #dc2626); 
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+}
+
+/* Beautiful Thumb colors */
 .thumb-color-1 {
-    background-color: #22c55e;
-    border-color: #22c55e;
-    color: #22c55e;
+  background: linear-gradient(135deg, #ffffff, #f0fdf4);
+  border: 3px solid #10b981;
+  box-shadow: 
+    0 4px 8px rgba(16, 185, 129, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .thumb-color-2 {
-    background-color:#22c55e;
-    border-color:#22c55e;
-    color: #22c55e;
+  background: linear-gradient(135deg, #ffffff, #f7fee7);
+  border: 3px solid #84cc16;
+  box-shadow: 
+    0 4px 8px rgba(132, 204, 22, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
+
 .thumb-color-3 {
-    background-color: #eab308;
-    border-color: #eab308; /* yellow */
-    color: #eab308;
+  background: linear-gradient(135deg, #ffffff, #fefce8);
+  border: 3px solid #f59e0b;
+  box-shadow: 
+    0 4px 8px rgba(245, 158, 11, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
+
 .thumb-color-4 {
-    background-color: #f97316;
-    border-color: #f97316; /* orange */
-    color: #f97316;
+  background: linear-gradient(135deg, #ffffff, #fff7ed);
+  border: 3px solid #f97316;
+  box-shadow: 
+    0 4px 8px rgba(249, 115, 22, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
+
 .thumb-color-5 {
-    background-color: #ef4444;
-    border-color: #ef4444;
-    color: #ef4444;
-
+  background: linear-gradient(135deg, #ffffff, #fef2f2);
+  border: 3px solid #ef4444;
+  box-shadow: 
+    0 4px 8px rgba(239, 68, 68, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
-/* Exact Streamlit help tooltip */
-.help-tooltip {
-    font-size: 0.83rem;
-    color: rgba(49, 51, 63, 0.6);
-    margin-top: 0.25rem;
-    line-height: 1.6;
+/* Journal Section */
+.journal-section {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.8));
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  margin: var(--space-lg) 0;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-
-/* Exact Streamlit Text Area */
 .stTextArea {
     position: relative;
 }
 
 .stTextArea textarea {
     width: 100%;
-    min-height: 95px;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid rgb(207, 213, 220);
-    border-radius: 0.5rem;
-    font-family: "Source Sans Pro", sans-serif;
+  min-height: 120px;
+  padding: var(--space-lg);
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  font-family: var(--font-primary);
     font-size: 1rem;
     line-height: 1.6;
-    color: rgb(49, 51, 63);
-    background-color: rgb(255, 255, 255);
+  color: var(--gray-700);
+  background: white;
     resize: vertical;
     outline: none;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: all var(--transition-normal);
 }
 
 .stTextArea textarea:focus {
-    border-color: rgb(255, 75, 75);
-    box-shadow: rgb(255, 75, 75) 0px 0px 0px 0.2rem;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px var(--primary-50);
 }
 
 .stTextArea textarea::placeholder {
-    color: rgba(49, 51, 63, 0.6);
+  color: var(--gray-400);
+  font-style: italic;
 }
 
-/* Exact Streamlit Button */
+/* Button Redesign */
 .stButton {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    user-select: none;
-    border: 1px solid rgb(49, 51, 63);      /* normal dark border */
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.6;
-    border-radius: 0.5rem;
-    transition: all 0.15s ease-in-out;
-    cursor: pointer;
-    color: rgb(49, 51, 63);                 /* normal dark text */
-    background-color: rgb(255, 255, 255);   /* white background */
-    min-height: 38.4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  user-select: none;
+  border: 1px solid #2563eb;
+  padding: var(--space-md) var(--space-xl);
+  font-size: 1rem;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-normal);
+  cursor: pointer;
+  background: #2563eb;
+  color: white;
+  min-height: 48px;
+  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.stButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left var(--transition-slow);
 }
 
 .stButton:hover {
-    color: rgb(255, 75, 75);                /* red text */
-    border-color: rgb(255, 75, 75);         /* red border */
-    background-color: rgb(255, 255, 255);   /* still white */
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px -3px rgba(37, 99, 235, 0.4);
+  background: #1d4ed8;
+  border-color: #1d4ed8;
 }
 
+.stButton:hover::before {
+  left: 100%;
+}
 
-.stButton:focus {
-    box-shadow: rgb(255, 75, 75) 0px 0px 0px 0.2rem;
+.stButton:active {
+  transform: translateY(0);
 }
 
 .stButton:disabled {
-    opacity: 0.65;
+  opacity: 0.6;
     cursor: not-allowed;
+  transform: none;
 }
 
 .btn-content {
     display: flex;
     align-items: center;
     justify-content: center;
+  gap: var(--space-sm);
 }
 
-/* Exact Streamlit Alert */
+.btn-loading {
+  display: none;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* Alert Components */
 .stAlert {
     position: relative;
-    padding: 0.75rem 1.25rem;
-    margin-bottom: 1rem;
+  padding: var(--space-lg) var(--space-xl);
+  margin-bottom: var(--space-lg);
     border: 1px solid transparent;
-    border-radius: 0.5rem;
+  border-radius: var(--radius-lg);
     font-size: 1rem;
     line-height: 1.6;
+  box-shadow: var(--shadow-sm);
 }
 
 .stAlert--success {
-    color: rgb(12, 84, 96);
-    background-color: rgb(209, 236, 241);
-    border-color: rgb(178, 223, 232);
+  background: var(--success-50);
+  border-color: var(--success-200);
+  color: var(--success-800);
 }
 
 .stAlert--info {
-    color: rgb(12, 84, 96);
-    background-color: rgb(209, 236, 241);
-    border-color: rgb(178, 223, 232);
+  background: var(--info-50);
+  border-color: var(--info-200);
+  color: var(--info-800);
 }
 
-.stAlert-content {
-    width: 100%;
+.stAlert--warning {
+  background: var(--warning-50);
+  border-color: var(--warning-200);
+  color: var(--warning-800);
 }
 
-/* Results section */
+.stAlert--error {
+  background: var(--error-50);
+  border-color: var(--error-200);
+  color: var(--error-800);
+}
+
+/* Results Section */
 .results-section {
-    margin-top: 1rem;
+  margin-top: var(--space-2xl);
+  animation: slideUp 0.5s ease-out;
 }
 
-/* Mobile responsiveness - Exact Streamlit breakpoints */
-@media (max-width: 768px) {
-    .block-container {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-        padding-top: 1rem;
-    }
-    
-    .streamlit-columns {
-        flex-direction: column;
-        gap: 0;
-    }
-    
-    h1 {
-        font-size: 1.875rem;
-    }
-    
-    h2 {
-        font-size: 1.125rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .block-container {
-        padding-left: 0.25rem;
-        padding-right: 0.25rem;
-    }
-    
-    h1 {
-        font-size: 1.5rem;
-    }
-}
-
-/* Additional Streamlit-specific styles */
-.element-container:empty {
-    display: none;
-}
-
-/* Ensure proper spacing between elements */
-.element-container + .element-container {
-    margin-top: 3rem;
-}
-
-/* Streamlit-like focus states */
-*:focus {
-    outline: none;
-}
-
-/* Streamlit loading spinner */
-.btn-loading {
-    display: none;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-/* Animation for results appearing */
-.results-section {
-    animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
+@keyframes slideUp {
     from {
         opacity: 0;
-        transform: translateY(10px);
+    transform: translateY(30px);
     }
     to {
         opacity: 1;
@@ -440,574 +709,158 @@ p {
     }
 }
 
-.slider-thumb .thumb-value {
-  position: absolute;
-  top: -24px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 1rem;
-  font-weight: 600;
-  color: inherit;
-  background: none;
-  padding: 0;
-  border: none;
-  border-radius: 0;
-  pointer-events: none;
+.burnout-result-card {
+  background: linear-gradient(135deg, var(--primary-50), var(--success-50));
+  border: 2px solid var(--primary-200);
+  border-radius: var(--radius-xl);
+  padding: var(--space-2xl);
+  margin-bottom: var(--space-xl);
+  text-align: center;
+  box-shadow: var(--shadow-lg);
 }
 
+.burnout-level {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: var(--space-md);
+}
 
+.burnout-level.low { color: var(--success-600); }
+.burnout-level.moderate { color: var(--warning-600); }
+.burnout-level.high { color: var(--error-600); }
 
-/* Adds space between label and slider */
-.slider-label {
-    display: block;
-    margin-bottom: 1.5rem; /* adjust spacing here */
+.wellness-score {
+  font-size: 1.25rem;
+  color: var(--gray-600);
+  margin-top: var(--space-sm);
+}
+
+/* Resources Section */
+.resources-grid {
+  display: grid;
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+.resource-card {
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+}
+
+.resource-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-300);
+}
+
+.resource-card a {
+  color: var(--primary-600);
+  text-decoration: none;
     font-weight: 600;
-    font-size: 1rem;
+  transition: color var(--transition-fast);
 }
 
-
-/* Exact Streamlit CSS Match */
-
-/* Import Streamlit fonts */
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap');
-
-/* Reset and base - Exact Streamlit */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+.resource-card a:hover {
+  color: var(--primary-700);
 }
 
-html, body {
-    height: 100%;
-}
-
-body {
-    font-family: "Source Sans Pro", sans-serif;
-    background-color: #ffffff;
-    color: #262730;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-}
-
-/* Exact Streamlit App Structure */
-.stApp {
-    display: flex;
-    flex-direction: column;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-}
-
-.main {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: #ffffff;
-}
-
-.block-container {
-    max-width: 736px;
-    padding-top: 5rem;
-    padding-bottom: 10rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    margin: 0 auto;
-    position: relative;
-    width: 100%;
-}
-
-/* Exact Streamlit Element Container */
-.element-container {
-    margin-bottom: 1rem;
-    width: 100%;
-}
-
-/* Exact Streamlit Typography */
-h1 {
-    font-weight: 700;
-    color: rgb(49, 51, 63);
-    font-size: 2.5rem;
-    line-height: 1.2;
-    margin-bottom: 0px;
-    margin-top: 0px;
-}
-
-h2 {
-    font-weight: 600;
-    color: rgb(49, 51, 63);
-    font-size: 1.75rem;
-    line-height: 1.6;
-    margin-bottom: 0px;
-    margin-top: 0px;
-}
-
-h3 {
-    font-weight: 600;
-    color: rgb(49, 51, 63);
-    font-size: 1.125rem;
-    line-height: 1.6;
-    margin-bottom: 0px;
-    margin-top: 0px;
-}
-
-h4 {
-    font-weight: 600;
-    color: rgb(49, 51, 63);
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 0px;
-    margin-top: 0px;
-}
-
-p {
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 0px;
-    margin-top: 0px;
-    color: rgb(49, 51, 63);
-}
-
-/* Exact Streamlit Caption */
-.caption {
-    font-size: 0.875rem;
-    color: rgba(49, 51, 63, 0.6);
-    line-height: 1.6;
-}
-
-.stCaption {
-    font-size: 0.75rem;
-    color: rgba(49, 51, 63, 0.6);
-    line-height: 1.6;
-    text-align: center;
-}
-
-/* Exact Streamlit Divider */
-.streamlit-divider {
-    border: none;
-    height: 1px;
-    background-color: rgba(49, 51, 63, 0.2);
-    margin: 1rem 0;
-}
-
-/* Exact Streamlit Columns */
-/* Exact Streamlit Columns */
-.streamlit-columns {
-    display: flex;
-    justify-content: space-between;
-    column-gap: 3rem;  /* increase horizontal spacing between columns */
-    width: 100%;
-}
-
-.column {
-    flex: 1;
-    min-width: 0;
-}
-
-/* Exact Streamlit Slider Container */
-.stSlider {
-    margin-bottom: 1rem;
-    position: relative;
-}
-
-/* Hide default slider input */
-.hidden-slider {
-    display: none;
-}
-
-/* Custom slider track - Exact Streamlit appearance */
-.custom-slider {
-    position: relative;
-    width: 100%;
-    height: 6px;
-    cursor: pointer;
-    border-radius: 3px;
-    background-color: rgb(240, 242, 246);
-    margin: 1rem 0;
-}
-
-.slider-track {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgb(240, 242, 246);
-    border-radius: 3px;
-}
-
-.slider-fill {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    border-radius: 3px;
-    transition: all 0.3s ease;
-    background-color: rgb(240, 242, 246);
-}
-
-/* Exact Streamlit slider thumb */
-.slider-thumb {
-    position: absolute;
-    top: 50%;
+/* Loading Animation */
+.loading-spinner {
+  display: inline-block;
     width: 20px;
     height: 20px;
-    background: rgb(255, 255, 255);
+  border: 2px solid rgba(255,255,255,0.3);
     border-radius: 50%;
-    cursor: pointer;
-    transform: translate(-50%, -50%);
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px,
-                rgba(0, 0, 0, 0.14) 0px 2px 2px 0px,
-                rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
-    transition: all 0.3s ease;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    color: white;
-    font-weight: bold;
+  border-top-color: white;
+  animation: spin 0.8s linear infinite;
 }
 
-.thumb-value {
-    position: absolute;
-    top: -22px;
-    font-size: 12px;
-    font-weight: bold;
-    color: inherit;
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-.slider-thumb:hover {
-    transform: translate(-50%, -50%) scale(1.05);
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 5px -1px, rgba(0, 0, 0, 0.14) 0px 6px 10px 0px, rgba(0, 0, 0, 0.12) 0px 1px 18px 0px;
-}
-
-/* Color classes for slider fills - Your requested colors */
-.fill-color-1 { background-color: #2ECC71; }   /* bright green (best) */
-.fill-color-2 { background-color: #A9DFBF; }   /* light green */
-.fill-color-3 { background-color: #F7DC6F; }   /* yellow */
-.fill-color-4 { background-color: #F5B041; }   /* orange */
-.fill-color-5 { background-color: #E74C3C; }   /* red (worst) */
-
-
-/* Thumb colors - keep Streamlit red border */
-.thumb-color-1 {
-    background-color: #22c55e;
-    border-color: #22c55e;
-    color: #22c55e;
-}
-
-.thumb-color-2 {
-    background-color:#22c55e;
-    border-color:#22c55e;
-    color: #22c55e;
-}
-.thumb-color-3 {
-    background-color: #eab308;
-    border-color: #eab308; /* yellow */
-    color: #eab308;
-}
-.thumb-color-4 {
-    background-color: #f97316;
-    border-color: #f97316; /* orange */
-    color: #f97316;
-}
-.thumb-color-5 {
-    background-color: #ef4444;
-    border-color: #ef4444;
-    color: #ef4444;
-
-}
-
-/* Exact Streamlit help tooltip */
-.help-tooltip {
-    font-size: 0.83rem;
-    color: rgba(49, 51, 63, 0.6);
-    margin-top: 0.25rem;
-    line-height: 1.6;
-}
-
-
-/* Exact Streamlit Text Area */
-.stTextArea {
-    position: relative;
-}
-
-.stTextArea textarea {
-    width: 100%;
-    min-height: 95px;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid rgb(207, 213, 220);
-    border-radius: 0.5rem;
-    font-family: "Source Sans Pro", sans-serif;
-    font-size: 1rem;
-    line-height: 1.6;
-    color: rgb(49, 51, 63);
-    background-color: rgb(255, 255, 255);
-    resize: vertical;
-    outline: none;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.stTextArea textarea:focus {
-    border-color: rgb(255, 75, 75);
-    box-shadow: rgb(255, 75, 75) 0px 0px 0px 0.2rem;
-}
-
-.stTextArea textarea::placeholder {
-    color: rgba(49, 51, 63, 0.6);
-}
-
-/* Exact Streamlit Button */
-.stButton {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    user-select: none;
-    border: 1px solid rgb(49, 51, 63);      /* normal dark border */
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.6;
-    border-radius: 0.5rem;
-    transition: all 0.15s ease-in-out;
-    cursor: pointer;
-    color: rgb(49, 51, 63);                 /* normal dark text */
-    background-color: rgb(255, 255, 255);   /* white background */
-    min-height: 38.4px;
-}
-
-.stButton:hover {
-    color: rgb(255, 75, 75);                /* red text */
-    border-color: rgb(255, 75, 75);         /* red border */
-    background-color: rgb(255, 255, 255);   /* still white */
-}
-
-
-.stButton:focus {
-    box-shadow: rgb(255, 75, 75) 0px 0px 0px 0.2rem;
-}
-
-.stButton:disabled {
-    opacity: 0.65;
-    cursor: not-allowed;
-}
-
-.btn-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Exact Streamlit Alert */
-.stAlert {
-    position: relative;
-    padding: 0.75rem 1.25rem;
-    margin-bottom: 1rem;
-    border: 1px solid transparent;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    line-height: 1.6;
-}
-
-.stAlert--success {
-    color: rgb(12, 84, 96);
-    background-color: rgb(209, 236, 241);
-    border-color: rgb(178, 223, 232);
-}
-
-.stAlert--info {
-    color: rgb(12, 84, 96);
-    background-color: rgb(209, 236, 241);
-    border-color: rgb(178, 223, 232);
-}
-
-.stAlert-content {
-    width: 100%;
-}
-
-/* Results section */
-.results-section {
-    margin-top: 1rem;
-}
-
-/* Mobile responsiveness - Exact Streamlit breakpoints */
+/* Responsive Design */
 @media (max-width: 768px) {
     .block-container {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-        padding-top: 1rem;
+    margin: var(--space-md);
+    padding: var(--space-xl);
     }
     
     .streamlit-columns {
-        flex-direction: column;
-        gap: 0;
-    }
-    
-    h1 {
-        font-size: 1.875rem;
-    }
-    
-    h2 {
-        font-size: 1.125rem;
-    }
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+  
+  h1 {
+    font-size: 2.25rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  .main {
+    padding: var(--space-md);
+  }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 480px) {
     .block-container {
-        padding-left: 0.25rem;
-        padding-right: 0.25rem;
-    }
-    
-    h1 {
-        font-size: 1.5rem;
-    }
-}
-
-/* Additional Streamlit-specific styles */
-.element-container:empty {
-    display: none;
-}
-
-/* Ensure proper spacing between elements */
-.element-container + .element-container {
-    margin-top: 3rem;
-}
-
-/* Streamlit-like focus states */
-*:focus {
-    outline: none;
-}
-
-/* Streamlit loading spinner */
-.btn-loading {
-    display: none;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-/* Animation for results appearing */
-.results-section {
-    animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.slider-thumb .thumb-value {
-  position: absolute;
-  top: -24px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 1rem;
-  font-weight: 600;
-  color: inherit;
-  background: none;
-  padding: 0;
-  border: none;
-  border-radius: 0;
-  pointer-events: none;
-}
-
-
-
-/* Adds space between label and slider */
-.slider-label {
-    display: block;
-    margin-bottom: 1.5rem; /* adjust spacing here */
-    font-weight: 600;
-    font-size: 1rem;
-}
-
-
-
-/* Ensure all sliders have consistent spacing */
-.element-container.spaced-slider {
-    margin-top: 20px; /* Adjust this number if needed */
-    margin-bottom: 10px;
-}
-
-/* Ensure all sliders have consistent spacing */
-.element-container.spaced-slider {
-    margin-top: 20px; /* Adjust this number if needed */
-    margin-bottom: 10px;
-}
-
-/* Nudge only the last slider on the right column (Food Security) down a bit */
-.streamlit-columns .column:last-child .element-container:last-of-type {
-  /* keep your global 3rem spacing, plus a small extra offset */
-  margin-top: calc(2.5rem + 8px); /* tweak 6–12px until it lines up perfectly */
-}
-
-
-/* Make all links same color regardless of visited/hover state */
-#resources a,
-#resources a:visited {
-  color: #0645AD; /* pick the shade you like */
-  text-decoration: none; /* optional: remove underline */
-}
-
-#resources a:hover {
-  color: #0B0080; /* darker shade on hover */
-  text-decoration: underline; /* optional hover effect */
-}
-
-
-
-/* ✅ Mobile-only tweaks */
-@media (max-width: 900px) {
-  body {
-    font-size: 14px;
-    line-height: 1.4;
-    padding: 0 10px;
+    margin: var(--space-sm);
+    padding: var(--space-lg);
   }
-
-  h1, h2, h3 {
-    font-size: 18px;
-    text-align: center;
+  
+  h1 {
+    font-size: 1.875rem;
   }
-
-  .streamlit-columns {
-    flex-direction: column !important;
-    gap: 1rem;
-  }
-
-  input[type="range"] {
+  
+  .stButton {
     width: 100%;
-    height: 36px;
-  }
-
-  button, .stButton>button {
-    padding: 12px 18px;
-    font-size: 16px;
-  }
-
-  textarea {
-    font-size: 14px;
-    line-height: 1.4;
-    padding: 12px;
-  }
-
-  /* Safe area support for iOS notch */
-  body {
-    padding-bottom: env(safe-area-inset-bottom);
   }
 }
 
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 
+/* Focus styles */
+*:focus {
+  outline: 2px solid var(--primary-500);
+  outline-offset: 2px;
+}
 
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --gray-200: #000000;
+    --gray-300: #000000;
+    --primary-600: #0000ff;
+  }
+}
 
+/* Dark mode support (for future) */
+@media (prefers-color-scheme: dark) {
+  /* Dark mode variables would go here */
+}
+
+/* Print styles */
+@media print {
+  .stButton,
+  .btn-loading {
+    display: none;
+  }
+  
+  .block-container {
+    box-shadow: none;
+    border: 1px solid var(--gray-300);
+  }
+}

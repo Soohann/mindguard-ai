@@ -3,102 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MindGuard</title>
+    <title>MindGuard - AI-Powered Student Wellness</title>
+    <meta name="description" content="Professional wellness monitoring and burnout detection for University of Idaho students">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 <body>
     <div class="stApp">
         <div class="main">
             <div class="block-container">
-                <!-- Exact Streamlit Title -->
+                <!-- Header Section -->
                 <div class="element-container">
                     <h1>🧠 MindGuard</h1>
                 </div>
                 
-                <!-- Exact Streamlit Subheader -->
                 <div class="element-container">
-                    <h2>AI-Powered Burnout Detection for Students</h2>
+                    <h2>AI-Powered Wellness Monitoring for Students</h2>
                 </div>
                 
-                <!-- Exact Streamlit Divider -->
                 <div class="element-container">
                     <hr class="streamlit-divider">
                 </div>
                 
-                <!-- Exact Streamlit Markdown -->
+                <!-- Introduction -->
                 <div class="element-container">
-                    <p>Welcome! MindGuard helps you check in with your mental wellness and offers guidance to help prevent burnout. All data is anonymous.</p>
+                    <p>Welcome to MindGuard, your personal wellness companion designed specifically for University of Idaho students. Our AI-powered system helps you monitor your mental wellness, detect early signs of burnout, and connect you with campus resources. All data is completely anonymous and secure.</p>
                 </div>
                 
-                <!-- Exact Streamlit Section Header -->
+                <!-- Wellness Check-in Section -->
                 <div class="element-container">
                     <h2>🌡️ Daily Wellness Check-In</h2>
                 </div>
                 
-                <!-- Exact Streamlit Caption -->
                 <div class="element-container">
-                    <p class="caption">Use the sliders to reflect on your current state (1 = low, 5 = high).</p>
+                    <p class="caption">Use the interactive sliders below to reflect your current state. Move each slider to indicate how you're feeling today (1 = lowest, 5 = highest).</p>
                 </div>
 
                 <form id="wellness-form">
-                    <!-- Exact Streamlit Two Column Layout -->
+                    <!-- Wellness Sliders Grid -->
                     <div class="streamlit-columns">
                         <!-- Left Column -->
                         <div class="column">
                             <!-- Mood Slider -->
                             <div class="element-container">
-                                <h3 id="mood-label">😐 Mood</h3>
-                                <div class="stSlider">
-                                    <div class="custom-slider" data-slider="mood">
-                                        <div class="slider-track"></div>
-                                        <div class="slider-fill"></div>
-                                        <div class="slider-thumb"></div>
+                                <div class="slider-container">
+                                    <div class="slider-label">
+                                        <span>
+                                            <span class="slider-emoji" id="mood-emoji">😐</span>
+                                            <span id="mood-label-text">Mood</span>
+                                        </span>
+                                        <span class="slider-value-display" id="mood-value">3</span>
                                     </div>
-                                    <input type="range" min="1" max="5" value="3" class="hidden-slider" name="mood" id="mood">
+                                    <div class="stSlider">
+                                        <div class="custom-slider" data-slider="mood">
+                                            <div class="slider-track"></div>
+                                            <div class="slider-fill"></div>
+                                            <div class="slider-thumb">
+                                                <div class="thumb-value">3</div>
+                                            </div>
+                                        </div>
+                                        <input type="range" min="1" max="5" value="3" class="hidden-slider" name="mood" id="mood" style="display: none;">
+                                    </div>
+                                    <div class="help-tooltip">1 = Very bad, 5 = Excellent</div>
                                 </div>
-                                <div class="help-tooltip">1 = Very bad, 5 = Excellent</div>
                             </div>
 
                             <!-- Stress Slider -->
                             <div class="element-container">
-                                <h3 id="stress-label">😟 Stress</h3>
-                                <div class="stSlider">
-                                    <div class="custom-slider" data-slider="stress">
-                                        <div class="slider-track"></div>
-                                        <div class="slider-fill"></div>
-                                        <div class="slider-thumb"></div>
+                                <div class="slider-container">
+                                    <div class="slider-label">
+                                        <span>
+                                            <span class="slider-emoji" id="stress-emoji">😟</span>
+                                            <span id="stress-label-text">Stress</span>
+                                        </span>
+                                        <span class="slider-value-display" id="stress-value">3</span>
                                     </div>
-                                    <input type="range" min="1" max="5" value="3" class="hidden-slider" name="stress" id="stress">
+                                    <div class="stSlider">
+                                        <div class="custom-slider" data-slider="stress">
+                                            <div class="slider-track"></div>
+                                            <div class="slider-fill"></div>
+                                            <div class="slider-thumb">
+                                                <div class="thumb-value">3</div>
+                                            </div>
+                                        </div>
+                                        <input type="range" min="1" max="5" value="3" class="hidden-slider" name="stress" id="stress" style="display: none;">
+                                    </div>
+                                    <div class="help-tooltip">1 = No stress, 5 = Extreme stress</div>
                                 </div>
-                                <div class="help-tooltip">1 = No stress, 5 = Extreme stress</div>
                             </div>
 
                             <!-- Focus Slider -->
                             <div class="element-container">
-                                <h3 id="focus-label">😐 Focus</h3>
-                                <div class="stSlider">
-                                    <div class="custom-slider" data-slider="focus">
-                                        <div class="slider-track"></div>
-                                        <div class="slider-fill"></div>
-                                        <div class="slider-thumb"></div>
+                                <div class="slider-container">
+                                    <div class="slider-label">
+                                        <span>
+                                            <span class="slider-emoji" id="focus-emoji">😐</span>
+                                            <span id="focus-label-text">Focus</span>
+                                        </span>
+                                        <span class="slider-value-display" id="focus-value">3</span>
                                     </div>
-                                    <input type="range" min="1" max="5" value="3" class="hidden-slider" name="focus" id="focus">
+                                    <div class="stSlider">
+                                        <div class="custom-slider" data-slider="focus">
+                                            <div class="slider-track"></div>
+                                            <div class="slider-fill"></div>
+                                            <div class="slider-thumb">
+                                                <div class="thumb-value">3</div>
+                                            </div>
+                                        </div>
+                                        <input type="range" min="1" max="5" value="3" class="hidden-slider" name="focus" id="focus" style="display: none;">
+                                    </div>
+                                    <div class="help-tooltip">1 = Can't focus, 5 = Fully focused</div>
                                 </div>
-                                <div class="help-tooltip">1 = Can't focus, 5 = Fully focused</div>
                             </div>
 
                             <!-- Motivation Slider -->
                             <div class="element-container">
-                                <h3 id="motivation-label">😐 Motivation</h3>
-                                <div class="stSlider">
-                                    <div class="custom-slider" data-slider="motivation">
-                                        <div class="slider-track"></div>
-                                        <div class="slider-fill"></div>
-                                        <div class="slider-thumb"></div>
+                                <div class="slider-container">
+                                    <div class="slider-label">
+                                        <span>
+                                            <span class="slider-emoji" id="motivation-emoji">😐</span>
+                                            <span id="motivation-label-text">Motivation</span>
+                                        </span>
+                                        <span class="slider-value-display" id="motivation-value">3</span>
                                     </div>
-                                    <input type="range" min="1" max="5" value="3" class="hidden-slider" name="motivation" id="motivation">
+                                    <div class="stSlider">
+                                        <div class="custom-slider" data-slider="motivation">
+                                            <div class="slider-track"></div>
+                                            <div class="slider-fill"></div>
+                                            <div class="slider-thumb">
+                                                <div class="thumb-value">3</div>
+                                            </div>
+                                        </div>
+                                        <input type="range" min="1" max="5" value="3" class="hidden-slider" name="motivation" id="motivation" style="display: none;">
+                                    </div>
+                                    <div class="help-tooltip">1 = No motivation, 5 = Highly motivated</div>
                                 </div>
-                                <div class="help-tooltip">1 = No motivation, 5 = Highly motivated</div>
                             </div>
                         </div>
 
@@ -106,147 +146,191 @@
                         <div class="column">
                             <!-- Sleep Slider -->
                             <div class="element-container">
-                                <h3 id="sleep-label">😐 Sleep Quality</h3>
-                                <div class="stSlider">
-                                    <div class="custom-slider" data-slider="sleep">
-                                        <div class="slider-track"></div>
-                                        <div class="slider-fill"></div>
-                                        <div class="slider-thumb"></div>
+                                <div class="slider-container">
+                                    <div class="slider-label">
+                                        <span>
+                                            <span class="slider-emoji" id="sleep-emoji">😐</span>
+                                            <span id="sleep-label-text">Sleep</span>
+                                        </span>
+                                        <span class="slider-value-display" id="sleep-value">3</span>
                                     </div>
-                                    <input type="range" min="1" max="5" value="3" class="hidden-slider" name="sleep" id="sleep">
+                                    <div class="stSlider">
+                                        <div class="custom-slider" data-slider="sleep">
+                                            <div class="slider-track"></div>
+                                            <div class="slider-fill"></div>
+                                            <div class="slider-thumb">
+                                                <div class="thumb-value">3</div>
+                                            </div>
+                                        </div>
+                                        <input type="range" min="1" max="5" value="3" class="hidden-slider" name="sleep" id="sleep" style="display: none;">
+                                    </div>
+                                    <div class="help-tooltip">1 = Very poor, 5 = Well-rested</div>
                                 </div>
-                                <div class="help-tooltip">1 = Very poor, 5 = Well-rested</div>
                             </div>
-
-                            
 
                             <!-- Anxiety Slider -->
                             <div class="element-container">
-                                <h3 id="anxiety-label">😬 Anxiety</h3>
-                                <div class="stSlider">
-                                    <div class="custom-slider" data-slider="anxiety">
-                                        <div class="slider-track"></div>
-                                        <div class="slider-fill"></div>
-                                        <div class="slider-thumb"></div>
+                                <div class="slider-container">
+                                    <div class="slider-label">
+                                        <span>
+                                            <span class="slider-emoji" id="anxiety-emoji">😬</span>
+                                            <span id="anxiety-label-text">Anxiety</span>
+                                        </span>
+                                        <span class="slider-value-display" id="anxiety-value">3</span>
                                     </div>
-                                    <input type="range" min="1" max="5" value="3" class="hidden-slider" name="anxiety" id="anxiety">
+                                    <div class="stSlider">
+                                        <div class="custom-slider" data-slider="anxiety">
+                                            <div class="slider-track"></div>
+                                            <div class="slider-fill"></div>
+                                            <div class="slider-thumb">
+                                                <div class="thumb-value">3</div>
+                                            </div>
+                                        </div>
+                                        <input type="range" min="1" max="5" value="3" class="hidden-slider" name="anxiety" id="anxiety" style="display: none;">
+                                    </div>
+                                    <div class="help-tooltip">1 = Calm, 5 = Extremely anxious</div>
                                 </div>
-                                <div class="help-tooltip">1 = Calm, 5 = Extremely anxious</div>
                             </div>
 
                             <!-- Appetite Slider -->
                             <div class="element-container">
-                                <h3 id="appetite-label">😐 Appetite</h3>
-                                <div class="stSlider">
-                                    <div class="custom-slider" data-slider="appetite">
-                                        <div class="slider-track"></div>
-                                        <div class="slider-fill"></div>
-                                        <div class="slider-thumb"></div>
+                                <div class="slider-container">
+                                    <div class="slider-label">
+                                        <span>
+                                            <span class="slider-emoji" id="appetite-emoji">😐</span>
+                                            <span id="appetite-label-text">Appetite</span>
+                                        </span>
+                                        <span class="slider-value-display" id="appetite-value">3</span>
                                     </div>
-                                    <input type="range" min="1" max="5" value="3" class="hidden-slider" name="appetite" id="appetite">
+                                    <div class="stSlider">
+                                        <div class="custom-slider" data-slider="appetite">
+                                            <div class="slider-track"></div>
+                                            <div class="slider-fill"></div>
+                                            <div class="slider-thumb">
+                                                <div class="thumb-value">3</div>
+                                            </div>
+                                        </div>
+                                        <input type="range" min="1" max="5" value="3" class="hidden-slider" name="appetite" id="appetite" style="display: none;">
+                                    </div>
+                                    <div class="help-tooltip">1 = Poor appetite, 5 = Very strong appetite</div>
                                 </div>
-                                <div class="help-tooltip">1 = Poor appetite, 5 = Very strong appetite</div>
+                            </div>
 
-
-
-
-                                <!-- Food Security Slider -->
-<div class="element-container">
-    <h3 id="food_security-label">😐 Food Security</h3>
-    <div class="stSlider">
-        <div class="custom-slider" data-slider="food_security">
-            <div class="slider-track"></div>
-            <div class="slider-fill"></div>
-            <div class="slider-thumb"></div>
-        </div>
-        <input type="range" min="1" max="5" value="3" class="hidden-slider" name="food_security" id="food_security">
-    </div>
-    <div class="help-tooltip">1 = No money for food, 5 = Always have enough</div>
-</div>
-
-
-
-
-                                    
-
-
-                        
+                            <!-- Food Security Slider -->
+                            <div class="element-container">
+                                <div class="slider-container">
+                                    <div class="slider-label">
+                                        <span>
+                                            <span class="slider-emoji" id="food_security-emoji">😐</span>
+                                            <span id="food_security-label-text">Food Security</span>
+                                        </span>
+                                        <span class="slider-value-display" id="food_security-value">3</span>
+                                    </div>
+                                    <div class="stSlider">
+                                        <div class="custom-slider" data-slider="food_security">
+                                            <div class="slider-track"></div>
+                                            <div class="slider-fill"></div>
+                                            <div class="slider-thumb">
+                                                <div class="thumb-value">3</div>
+                                            </div>
+                                        </div>
+                                        <input type="range" min="1" max="5" value="3" class="hidden-slider" name="food_security" id="food_security" style="display: none;">
+                                    </div>
+                                    <div class="help-tooltip">1 = No money for food, 5 = Always have enough</div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Exact Streamlit Journal Section -->
+                    <!-- Journal Section -->
                     <div class="element-container">
-                        <h2>📝 Optional Journal Entry</h2>
-                    </div>
-                    
-                    <div class="element-container">
-                        <div class="stTextArea">
-                            <textarea 
-                                id="journal" 
-                                name="journal"
-                                placeholder="E.g., I'm feeling a bit overwhelmed but trying to stay focused."
-                                rows="3"></textarea>
+                        <div class="journal-section">
+                            <h2>📝 Optional Reflection</h2>
+                            <p class="caption">Share any additional thoughts about how you're feeling today. This helps our AI provide more personalized guidance.</p>
+                            
+                            <div class="stTextArea">
+                                <textarea 
+                                    id="journal" 
+                                    name="journal"
+                                    placeholder="For example: 'I'm feeling overwhelmed with upcoming exams, but I'm trying to stay focused and take things one step at a time...'"
+                                    rows="4"></textarea>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Exact Streamlit Divider -->
+                    <!-- Submit Section -->
                     <div class="element-container">
                         <hr class="streamlit-divider">
                     </div>
 
-                    <!-- Exact Streamlit Button -->
                     <div class="element-container">
                         <button type="submit" class="stButton" id="submit-btn">
                             <div class="btn-content">
                                 <span class="btn-text">✅ Submit Check-In</span>
-                                <span class="btn-loading" style="display: none;">Analyzing...</span>
+                                <span class="btn-loading" style="display: none;">
+                                    <span class="loading-spinner"></span>
+                                    Submitting your check-in...
+                                </span>
                             </div>
                         </button>
                     </div>
                 </form>
 
-                <!-- Results Section - Exact Streamlit Style -->
+                <!-- Results Section -->
                 <div id="results" class="results-section" style="display: none;">
                     <!-- Success Message -->
                     <div class="element-container">
                         <div class="stAlert stAlert--success">
-                            <div class="stAlert-content">✅ Check-in submitted!</div>
+                            <div class="stAlert-content">
+                                ✅ <strong>Analysis Complete!</strong> Your wellness check-in has been processed.
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Burnout Result -->
-                    <div class="element-container" id="burnout-result">
-                        <!-- Will be populated by JavaScript -->
-                    </div>
-
-                    <!-- Resources Section -->
+                    <!-- Burnout Result Card -->
                     <div class="element-container">
-                        <h4>🎯 Suggested Campus Resources</h4>
-                        <div id="resources"></div>
-                    </div>
-
-                    <!-- Feedback -->
-                    <div class="element-container">
-                        <div class="stAlert stAlert--info" id="feedback">
+                        <div class="burnout-result-card" id="burnout-result">
                             <!-- Will be populated by JavaScript -->
                         </div>
                     </div>
 
-                    <!-- Emotion Analysis -->
+                    <!-- Personalized Feedback -->
+                    <div class="element-container">
+                        <div class="stAlert stAlert--info" id="feedback">
+                            <div class="stAlert-content">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Campus Resources -->
+                    <div class="element-container">
+                        <h4>🎯 Recommended Campus Resources</h4>
+                        <div class="resources-grid" id="resources">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Emotion Analysis (if available) -->
                     <div class="element-container" id="emotion-analysis" style="display: none;">
-                        <h4>📝 Emotion Analysis</h4>
-                        <div class="emotion-result"></div>
+                        <h4>🧠 AI Emotion Analysis</h4>
+                        <div class="stAlert stAlert--info">
+                            <div class="emotion-result">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Exact Streamlit Footer -->
+                <!-- Footer -->
                 <div class="element-container">
                     <hr class="streamlit-divider">
                 </div>
                 
                 <div class="element-container">
-                    <div class="stCaption">🔒 Your data stays private. No names, IDs, or personal information are stored.</div>
+                    <div class="stCaption">
+                        🔒 <strong>Privacy First:</strong> Your data is completely anonymous and secure. No names, IDs, or personal information are stored.
+                    </div>
                 </div>
             </div>
         </div>
